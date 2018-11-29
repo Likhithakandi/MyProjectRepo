@@ -1,0 +1,51 @@
+---
+
+  - name: install apache and php modules
+    apt: name={{ items }} state=present
+    with_item:
+      - apache2
+      - php
+      - php-mysql
+      - git
+      - libsemanage-python
+      
+  - name: apache2 service create
+    service: name=apache state=started enabled=yes
+  
+  - name: configure SElinux to allow apache to connect to remote database
+    seboolean: name=httpd_can_network_connect_db state=true persistent=yes
+    when: sestatus.rc != 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
