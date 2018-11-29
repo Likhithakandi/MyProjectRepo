@@ -1,0 +1,30 @@
+---
+ 
+ - name: Install MYSQL package
+   apt: name={{ items }} state=installed
+   with_items:
+     - mysql-server
+     - MySQL-python
+     - libselinux-python
+     - libsemanage-python
+
+ - name: Configure SELinux to start mysql on any port
+   seboolean: name=mysql_connect_any state=ture persistent=yes
+   when: status.rc !=0
+
+ - name: Create Mysqql configuration file
+   template: src=my.cng.j2 dst=/etc/my.cnf
+   notify:
+     - restart mysql
+
+ - name: start the mysql service
+   service: name=mysqld state=started enabled=yes
+
+ - name: create application database
+   mysql_db: name={{ dbname }} state=present
+
+ - name: Create application dbuser
+   mysql_user: name={{ dbuseer }} password={{ upassword }} priv=*.*:ALL host='%'
+state=present
+
+
