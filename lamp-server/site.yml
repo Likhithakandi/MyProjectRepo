@@ -1,0 +1,21 @@
+---
+
+- name: apply this to cmmon config (all nodes)
+  hosts: all
+  remote_user: root
+  roles: 
+    - common
+
+- name: for the webserver tier
+  hosts: app-server
+  remote_user: root
+  roles:
+    - web
+
+- name: for the dbserver
+  hosts: db-server
+  remote_user: root
+  roles:
+    - db
+
+
